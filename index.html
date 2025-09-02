@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SJSU Parking Garage Fullness</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    #chart-container { width: 90vw; max-width: 900px; margin: 0 auto; background: #fff; padding: 2em; border-radius: 12px; box-shadow: 0 2px 8px #0001; }
+  </style>
+</head>
+<body>
+  <h1>SJSU Parking Garage Fullness Over Time</h1>
+  <div id="chart-container">
+    <canvas id="garageChart"></canvas>
+  </div>
+  <script>
+    fetch('garage_status_log.json')
+      .then(response => response.json())
+      .then(data => {
+        const labels = data.map(row => row.timestamp);
+        const south = data.map(row => Number(row["South"]));
+        const west = data.map(row => Number(row["West"]));
+        const north = data.map(row => Number(row["North"]));
+        const southCampus = data.map(row => Number(row["South Campus"]));
+
+        const ctx = document.getElementById('garageChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [
+              { label: 'South', data: south, borderColor: '#e74c3c', backgroundColor: 'rgba(231,76,60,0.1)', fill: false, tension: 0.2 },
+              { label: 'West', data: west, borderColor: '#2980b9', backgroundColor: 'rgba(41,128,185,0.1)', fill: false, tension: 0.2 },
+              { label: 'North', data: north, borderColor: '#27ae60', backgroundColor: 'rgba(39,174,96,0.1)', fill: false, tension: 0.2 },
+              { label: 'South Campus', data: southCampus, borderColor: '#f39c12', backgroundColor: 'rgba(243,156,18,0.1)', fill: false, tension: 0.2 }
+            ]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: 'top' },
+              title: { display: true, text: 'Garage Fullness (%) Over Time' }
+            },
+            scales: {
+              y: { min: 0, max: 100, title: { display: true, text: 'Fullness (%)' } },
+              x: { title: { display: true, text: 'Timestamp' } }
+            }
+          }
+        });
+      });
+  </script>
+</body>
+</html>
