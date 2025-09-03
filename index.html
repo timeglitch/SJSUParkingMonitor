@@ -10,25 +10,99 @@
     body { font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; }
     h1 { text-align: center; }
     #chart-container { width: 90vw; max-width: 900px; margin: 0 auto; background: #fff; padding: 2em; border-radius: 12px; box-shadow: 0 2px 8px #0001; }
+    #controls { text-align: center; margin-bottom: 1em; }
+    select { font-size: 1em; padding: 0.3em 1em; }
   </style>
 </head>
 <body>
-  <h1>SJSU Parking Garage Fullness Over Time</h1>
+  <h1>SJSU Parking Garage Usage History</h1>
+  <div id="controls">
+    <label for="rangeSelect">Show:</label>
+    <select id="rangeSelect">
+      <option value="today">Today</option>
+      <option value="lastweek">This Day Last Week</option>
+      <option value="week">Past 7 Days</option>
+      <option value="month">Past 30 Days</option>
+    </select>
+  </div>
   <div id="chart-container">
     <canvas id="garageChart"></canvas>
   </div>
   <script>
+    let allData = [];
+    let chart;
+    let labels, south, west, north, southCampus;
+
+    function filterData(range) {
+      const now = new Date();
+      let start, end;
+      if (range === "today") {
+        start = new Date(now);
+        start.setHours(0,0,0,0);
+        end = new Date(now);
+        end.setHours(23,59,59,999);
+      } else if (range === "lastweek") {
+        start = new Date(now);
+        start.setDate(start.getDate() - 7);
+        start.setHours(0,0,0,0);
+        end = new Date(now);
+        end.setDate(end.getDate() - 7);
+        end.setHours(23,59,59,999);
+      } else if (range === "week") {
+        start = new Date(now);
+        start.setDate(start.getDate() - 6);
+        start.setHours(0,0,0,0);
+        end = new Date(now);
+        end.setHours(23,59,59,999);
+      } else if (range === "month") {
+        start = new Date(now);
+        start.setDate(start.getDate() - 29);
+        start.setHours(0,0,0,0);
+        end = new Date(now);
+        end.setHours(23,59,59,999);
+      }
+      // Filter data
+      return allData.filter(row => {
+        const t = new Date(row.timestamp);
+        return t >= start && t <= end;
+      });
+    }
+
+    function updateChart(range) {
+      const filtered = filterData(range);
+      const filteredLabels = filtered.map(row => row.timestamp);
+      const filteredSouth = filtered.map(row => Number(row["South"]));
+      const filteredWest = filtered.map(row => Number(row["West"]));
+      const filteredNorth = filtered.map(row => Number(row["North"]));
+      const filteredSouthCampus = filtered.map(row => Number(row["South Campus"]));
+      // Update chart data
+      chart.data.labels = filteredLabels;
+      chart.data.datasets[0].data = filteredSouth;
+      chart.data.datasets[1].data = filteredWest;
+      chart.data.datasets[2].data = filteredNorth;
+      chart.data.datasets[3].data = filteredSouthCampus;
+      // Adjust x-axis min/max
+      if (filteredLabels.length > 0) {
+        chart.options.scales.x.min = new Date(filteredLabels[0]);
+        chart.options.scales.x.max = new Date(filteredLabels[filteredLabels.length - 1]);
+      }
+      chart.update();
+    }
+
     fetch('garage_status_log.json')
       .then(response => response.json())
       .then(data => {
-        const labels = data.map(row => row.timestamp);
-        const south = data.map(row => Number(row["South"]));
-        const west = data.map(row => Number(row["West"]));
-        const north = data.map(row => Number(row["North"]));
-        const southCampus = data.map(row => Number(row["South Campus"]));
+        allData = data;
+        // Default to "today"
+        const filtered = filterData("today");
+        labels = filtered.map(row => row.timestamp);
+        south = filtered.map(row => Number(row["South"]));
+        west = filtered.map(row => Number(row["West"]));
+        north = filtered.map(row => Number(row["North"]));
+        southCampus = filtered.map(row => Number(row["South Campus"]));
 
         const ctx = document.getElementById('garageChart').getContext('2d');
-        new Chart(ctx, {
+        chart = new Chart(ctx, {
           type: 'line',
           data: {
             labels: labels,
@@ -43,30 +117,26 @@
             responsive: true,
             plugins: {
               legend: { position: 'top' },
-              title: { display: true, text: 'Garage Fullness (%) Over Time' }
+              title: { display: true, text: 'Garage Usage (%) Over Time' }
             },
             scales: {
-              y: { min: 0, max: 100, title: { display: true, text: 'Fullness (%)' } },
+              y: { min: 0, max: 100, title: { display: true, text: 'Usage (%)' } },
               x: {
-                title: { display: true, text: 'Timestamp' },
+                title: { display: true, text: 'Time' },
                 type: 'time',
                 time: {
                   unit: 'hour',
-                  displayFormats: { hour: 'HH:mm' },
+                  displayFormats: { hour: 'HH:mm', day: 'yyyy-MM-dd' },
                   minUnit: 'hour',
                   tooltipFormat: 'yyyy-MM-dd HH:mm:ss'
                 },
                 min: (() => {
-                  // Set min to midnight of the first date in data
-                  const first = new Date(labels[0]);
-                  first.setHours(0,0,0,0);
-                  return first;
+                  if (labels.length === 0) return undefined;
+                  return new Date(labels[0]);
                 })(),
                 max: (() => {
-                  // Set max to 23:59:59 of the same day
-                  const first = new Date(labels[0]);
-                  first.setHours(23,59,59,999);
-                  return first;
+                  if (labels.length === 0) return undefined;
+                  return new Date(labels[labels.length - 1]);
                 })(),
                 ticks: {
                   source: 'auto',
@@ -76,6 +146,10 @@
               }
             }
           }
+        });
+
+        document.getElementById('rangeSelect').addEventListener('change', function() {
+          updateChart(this.value);
         });
       });
   </script>
