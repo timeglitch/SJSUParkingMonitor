@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SJSU Parking Garage Fullness</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
   <style>
     body { font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; }
     h1 { text-align: center; }
@@ -46,7 +47,33 @@
             },
             scales: {
               y: { min: 0, max: 100, title: { display: true, text: 'Fullness (%)' } },
-              x: { title: { display: true, text: 'Timestamp' } }
+              x: {
+                title: { display: true, text: 'Timestamp' },
+                type: 'time',
+                time: {
+                  unit: 'hour',
+                  displayFormats: { hour: 'HH:mm' },
+                  minUnit: 'hour',
+                  tooltipFormat: 'yyyy-MM-dd HH:mm:ss'
+                },
+                min: (() => {
+                  // Set min to midnight of the first date in data
+                  const first = new Date(labels[0]);
+                  first.setHours(0,0,0,0);
+                  return first;
+                })(),
+                max: (() => {
+                  // Set max to 23:59:59 of the same day
+                  const first = new Date(labels[0]);
+                  first.setHours(23,59,59,999);
+                  return first;
+                })(),
+                ticks: {
+                  source: 'auto',
+                  autoSkip: true,
+                  maxTicksLimit: 24
+                }
+              }
             }
           }
         });
