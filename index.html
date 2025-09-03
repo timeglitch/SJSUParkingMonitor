@@ -83,15 +83,23 @@
       const filteredWest = filtered.map(row => Number(row["West"]));
       const filteredNorth = filtered.map(row => Number(row["North"]));
       const filteredSouthCampus = filtered.map(row => Number(row["South Campus"]));
-      // Update chart data
       chart.data.labels = filteredLabels;
       chart.data.datasets[0].data = filteredSouth;
       chart.data.datasets[1].data = filteredWest;
       chart.data.datasets[2].data = filteredNorth;
       chart.data.datasets[3].data = filteredSouthCampus;
-      // Set x-axis min/max to full day(s)
       chart.options.scales.x.min = start;
       chart.options.scales.x.max = end;
+      // Dynamically set unit for x-axis
+      if (range === "today" || range === "lastweek") {
+        chart.options.scales.x.time.unit = 'hour';
+        chart.options.scales.x.ticks.maxTicksLimit = 24;
+      } else if (range === "week") {
+        chart.options.scales.x.time.unit = 'day';
+        chart.options.scales.x.ticks.maxTicksLimit = 7; 
+      } else {
+        chart.options.scales.x.time.unit = 'day';
+      }
       chart.update();
     }
 
@@ -133,7 +141,12 @@
                 type: 'time',
                 time: {
                   unit: 'hour',
-                  displayFormats: { hour: 'HH:mm', day: 'yyyy-MM-dd' },
+                  displayFormats: {
+                    hour: 'HH:mm',    // e.g., 14:00
+                    day: 'MMM d',           // e.g., Sep 3
+                    week: 'MMM d',          // e.g., Sep 3
+                    month: 'MMM yyyy'       // e.g., Sep 2025
+                  },
                   minUnit: 'hour',
                   tooltipFormat: 'yyyy-MM-dd HH:mm:ss'
                 },
