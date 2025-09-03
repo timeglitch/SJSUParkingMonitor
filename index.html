@@ -35,7 +35,7 @@
     let chart;
     let labels, south, west, north, southCampus;
 
-    function filterData(range) {
+    function getRangeBounds(range) {
       const now = new Date();
       let start, end;
       if (range === "today") {
@@ -63,6 +63,11 @@
         end = new Date(now);
         end.setHours(23,59,59,999);
       }
+      return {start, end};
+    }
+
+    function filterData(range) {
+      const {start, end} = getRangeBounds(range);
       // Filter data
       return allData.filter(row => {
         const t = new Date(row.timestamp);
@@ -71,6 +76,7 @@
     }
 
     function updateChart(range) {
+      const {start, end} = getRangeBounds(range);
       const filtered = filterData(range);
       const filteredLabels = filtered.map(row => row.timestamp);
       const filteredSouth = filtered.map(row => Number(row["South"]));
@@ -83,11 +89,9 @@
       chart.data.datasets[1].data = filteredWest;
       chart.data.datasets[2].data = filteredNorth;
       chart.data.datasets[3].data = filteredSouthCampus;
-      // Adjust x-axis min/max
-      if (filteredLabels.length > 0) {
-        chart.options.scales.x.min = new Date(filteredLabels[0]);
-        chart.options.scales.x.max = new Date(filteredLabels[filteredLabels.length - 1]);
-      }
+      // Set x-axis min/max to full day(s)
+      chart.options.scales.x.min = start;
+      chart.options.scales.x.max = end;
       chart.update();
     }
 
@@ -96,6 +100,7 @@
       .then(data => {
         allData = data;
         // Default to "today"
+        const {start, end} = getRangeBounds("today");
         const filtered = filterData("today");
         labels = filtered.map(row => row.timestamp);
         south = filtered.map(row => Number(row["South"]));
@@ -132,14 +137,8 @@
                   minUnit: 'hour',
                   tooltipFormat: 'yyyy-MM-dd HH:mm:ss'
                 },
-                min: (() => {
-                  if (labels.length === 0) return undefined;
-                  return new Date(labels[0]);
-                })(),
-                max: (() => {
-                  if (labels.length === 0) return undefined;
-                  return new Date(labels[labels.length - 1]);
-                })(),
+                min: start,
+                max: end,
                 ticks: {
                   source: 'auto',
                   autoSkip: true,
