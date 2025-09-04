@@ -6,13 +6,30 @@
   <title>SJSU Parking Garage Fullness</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-crosshair"></script>
   <style>
-    body { font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; }
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; min-height: 100vh; background: #f9f9f9; }
     h1 { text-align: center; }
     p { text-align: center; }
-    #chart-container { width: 90vw; max-width: 900px; margin: 0 auto; background: #fff; padding: 2em; border-radius: 12px; box-shadow: 0 2px 8px #0001; }
+    #chart-container {
+      width: 100vw;
+      max-width: 900px;
+      min-width: 300px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 2em;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #0001;
+      box-sizing: border-box;
+    }
     #controls { text-align: center; margin-bottom: 1em; }
-    select { font-size: 1em; padding: 0.3em 1em; }
+    select, button { font-size: 1em; padding: 0.3em 1em; }
+    canvas { width: 100% !important; height: 60vh !important; }
+    @media (max-width: 600px) {
+      #chart-container { padding: 0.5em; }
+      canvas { height: 40vh !important; }
+    }
   </style>
 </head>
 <body>
@@ -20,7 +37,7 @@
   <div id="controls">
     <label for="rangeSelect">Show:</label>
     <select id="rangeSelect">
-      <option value="today">Today</option>
+      <option value="today" selected>Today</option>
       <option value="lastweek">This Day Last Week</option>
       <option value="week">Past 7 Days</option>
       <option value="month">Past 30 Days</option>
@@ -157,7 +174,26 @@
             responsive: true,
             plugins: {
               legend: { position: 'top' },
-              title: { display: true, text: 'Garage Usage (%) Over Time' }
+              title: { display: true, text: 'Garage Usage (%) Over Time' },
+              tooltip: {
+                mode: 'index',
+                intersect: false,
+                enabled: true
+              },
+              crosshair: {
+                enabled: true,
+                line: {
+                  color: '#333',
+                  width: 1
+                },
+                sync: { enabled: false },
+                zoom: { enabled: false },
+                snap: { enabled: true }
+              }
+            },
+            interaction: {
+              mode: 'index',
+              intersect: false
             },
             scales: {
               y: { min: 0, max: 100, title: { display: true, text: 'Usage (%)' } },
@@ -185,7 +221,7 @@
               }
             }
           }
-        });
+      });
 
         // Ensure forward button is correctly disabled on initial load
         updateChart("today", 0);
@@ -205,6 +241,12 @@
           offset++;
           updateChart(currentRange, offset);
         });
+      });
+
+      window.addEventListener('resize', function() {
+        if (chart) {
+          chart.resize();
+        }
       });
   </script>
 </body>
