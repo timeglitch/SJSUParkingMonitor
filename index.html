@@ -25,6 +25,8 @@
       <option value="week">Past 7 Days</option>
       <option value="month">Past 30 Days</option>
     </select>
+    <button id="backBtn">&lt; Back</button>
+    <button id="forwardBtn">Forward &gt;</button>
   </div>
   <div id="chart-container">
     <canvas id="garageChart"></canvas>
@@ -35,50 +37,53 @@
     let allData = [];
     let chart;
     let labels, south, west, north, southCampus;
+    let currentRange = "today";
+    let offset = 0; // 0 = today, -1 = previous, +1 = next
 
-    function getRangeBounds(range) {
+    function getRangeBounds(range, offset=0) {
       const now = new Date();
       let start, end;
       if (range === "today") {
         start = new Date(now);
+        start.setDate(start.getDate() + offset);
         start.setHours(0,0,0,0);
-        end = new Date(now);
+        end = new Date(start);
         end.setHours(23,59,59,999);
       } else if (range === "lastweek") {
         start = new Date(now);
-        start.setDate(start.getDate() - 7);
+        start.setDate(start.getDate() - 7 + offset);
         start.setHours(0,0,0,0);
-        end = new Date(now);
-        end.setDate(end.getDate() - 7);
+        end = new Date(start);
         end.setHours(23,59,59,999);
       } else if (range === "week") {
         start = new Date(now);
-        start.setDate(start.getDate() - 6);
+        start.setDate(start.getDate() - 6 + offset * 7);
         start.setHours(0,0,0,0);
-        end = new Date(now);
+        end = new Date(start);
+        end.setDate(end.getDate() + 6);
         end.setHours(23,59,59,999);
       } else if (range === "month") {
         start = new Date(now);
-        start.setDate(start.getDate() - 29);
+        start.setDate(start.getDate() - 29 + offset * 30);
         start.setHours(0,0,0,0);
-        end = new Date(now);
+        end = new Date(start);
+        end.setDate(end.getDate() + 29);
         end.setHours(23,59,59,999);
       }
       return {start, end};
     }
 
-    function filterData(range) {
-      const {start, end} = getRangeBounds(range);
-      // Filter data
+    function filterData(range, offset=0) {
+      const {start, end} = getRangeBounds(range, offset);
       return allData.filter(row => {
         const t = new Date(row.timestamp);
         return t >= start && t <= end;
       });
     }
 
-    function updateChart(range) {
-      const {start, end} = getRangeBounds(range);
-      const filtered = filterData(range);
+    function updateChart(range, offset=0) {
+      const {start, end} = getRangeBounds(range, offset);
+      const filtered = filterData(range, offset);
       const filteredLabels = filtered.map(row => row.timestamp);
       const filteredSouth = filtered.map(row => Number(row["South"]));
       const filteredWest = filtered.map(row => Number(row["West"]));
@@ -97,11 +102,22 @@
         chart.options.scales.x.ticks.maxTicksLimit = 24;
       } else if (range === "week") {
         chart.options.scales.x.time.unit = 'day';
-        chart.options.scales.x.ticks.maxTicksLimit = 7; 
+        chart.options.scales.x.ticks.maxTicksLimit = 14;
       } else {
         chart.options.scales.x.time.unit = 'day';
+        chart.options.scales.x.ticks.maxTicksLimit = 30;
       }
       chart.update();
+
+      // Disable/enable forward button
+      const lastDataTime = allData.length > 0 ? new Date(allData[allData.length - 1].timestamp) : null;
+      const endTime = end;
+      const forwardBtn = document.getElementById('forwardBtn');
+      if (lastDataTime && endTime >= lastDataTime) {
+        forwardBtn.disabled = true;
+      } else {
+        forwardBtn.disabled = false;
+      }
     }
 
     fetch('garage_status_log.json')
@@ -151,7 +167,7 @@
                 time: {
                   unit: 'hour',
                   displayFormats: {
-                    hour: 'HH:mm',          // e.g., 14:00
+                    hour: 'MMM d HH:mm',    // e.g., Sep 3 14:00
                     day: 'MMM d',           // e.g., Sep 3
                     week: 'MMM d',          // e.g., Sep 3
                     month: 'MMM yyyy'       // e.g., Sep 2025
@@ -163,7 +179,7 @@
                 max: end,
                 ticks: {
                   source: 'auto',
-                  autoSkip: true,
+                  autoSkip: false,
                   maxTicksLimit: 24
                 }
               }
@@ -171,8 +187,23 @@
           }
         });
 
+        // Ensure forward button is correctly disabled on initial load
+        updateChart("today", 0);
+
         document.getElementById('rangeSelect').addEventListener('change', function() {
-          updateChart(this.value);
+          currentRange = this.value;
+          offset = 0; // Reset offset when changing range
+          updateChart(currentRange, offset);
+        });
+
+        document.getElementById('backBtn').addEventListener('click', function() {
+          offset--;
+          updateChart(currentRange, offset);
+        });
+
+        document.getElementById('forwardBtn').addEventListener('click', function() {
+          offset++;
+          updateChart(currentRange, offset);
         });
       });
   </script>
