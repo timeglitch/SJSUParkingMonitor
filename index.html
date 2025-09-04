@@ -29,7 +29,8 @@
   <div id="chart-container">
     <canvas id="garageChart"></canvas>
   </div>
-  <p>Made by Frank Zhang. <a target="_blank"href="https://github.com/timeglitch/SJSUParkingMonitor">GitHub</a></p>
+  <p>Last updated from <a href="https://sjsuparkingstatus.sjsu.edu/">SJSU Parking Status</a> at <span id="last-updated-time"></span><br>
+  Made by Frank Zhang. <a target="_blank"href="https://github.com/timeglitch/SJSUParkingMonitor">GitHub</a></p>
   <script>
     let allData = [];
     let chart;
@@ -107,6 +108,14 @@
       .then(response => response.json())
       .then(data => {
         allData = data;
+
+        // Update last updated time
+        if (allData.length > 0) {
+          const lastTimestamp = allData[allData.length - 1].timestamp;
+          document.getElementById('last-updated-time').textContent = new Date(lastTimestamp).toLocaleString();
+        } else {
+          document.getElementById('last-updated-time').textContent = "No data available";
+        }
         // Default to "today"
         const {start, end} = getRangeBounds("today");
         const filtered = filterData("today");
@@ -142,7 +151,7 @@
                 time: {
                   unit: 'hour',
                   displayFormats: {
-                    hour: 'HH:mm',    // e.g., 14:00
+                    hour: 'HH:mm',          // e.g., 14:00
                     day: 'MMM d',           // e.g., Sep 3
                     week: 'MMM d',          // e.g., Sep 3
                     month: 'MMM yyyy'       // e.g., Sep 2025
