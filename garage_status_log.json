@@ -565,5 +565,19 @@
     "West": "97",
     "North": "94",
     "South Campus": "41"
+  },
+  {
+    "timestamp": "2025-09-04 11:00:08",
+    "South": "100",
+    "West": "96",
+    "North": "94",
+    "South Campus": "44"
+  },
+  {
+    "timestamp": "2025-09-04 11:30:07",
+    "South": "100",
+    "West": "97",
+    "North": "95",
+    "South Campus": "49"
   }
 ]
