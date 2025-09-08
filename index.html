@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>SJSU Parking Garage Fullness</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
@@ -10,50 +10,60 @@
   <style>
     html, body { height: 100%; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; min-height: 100vh; background: #f9f9f9; }
-    h1 { text-align: center; }
-    p { text-align: center; }
+    h1 { text-align: center; margin-top: 1em; }
+    p { text-align: center; margin-bottom: 1em; }
+    #main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
     #chart-container {
+      flex: 1 1 auto;
       width: 100vw;
       max-width: 900px;
       min-width: 300px;
       margin: 0 auto;
       background: #fff;
-      padding: 2em;
+      padding: 1em;
       border-radius: 12px;
       box-shadow: 0 2px 8px #0001;
       box-sizing: border-box;
-      height: 70vh;
-      min-height: 300px;
+      min-height: 200px;
       display: flex;
       align-items: stretch;
     }
-    #controls { text-align: center; margin-bottom: 1em; }
+    #controls { text-align: center; margin-bottom: 0.5em; background: #f9f9f9; z-index: 2; }
     select, button { font-size: 1em; padding: 0.3em 1em; }
-    canvas { width: 100% !important; height: 100% !important; display: block; }
+    canvas { width: 100% !important; height: 60vh !important; display: block; }
     @media (max-width: 600px) {
-      #chart-container { padding: 0.5em; height: 60vh; min-height: 200px; }
-      canvas { height: 100% !important; }
+      #chart-container { padding: 0.2em; min-height: 120px; }
+      h1 { font-size: 1.2em; }
+      canvas { height: 40vh !important; }
     }
   </style>
 </head>
 <body>
-  <h1>SJSU Parking Garage Usage History</h1>
-  <div id="controls">
-    <label for="rangeSelect">Show:</label>
-    <select id="rangeSelect">
-      <option value="today" selected>Today</option>
-      <option value="lastweek">This Day Last Week</option>
-      <option value="week">Past 7 Days</option>
-      <option value="month">Past 30 Days</option>
-    </select>
-    <button id="backBtn">&lt; Back</button>
-    <button id="forwardBtn">Forward &gt;</button>
-  </div>
-  <div id="chart-container">
-    <canvas id="garageChart"></canvas>
-  </div>
-  <p>Last updated from <a href="https://sjsuparkingstatus.sjsu.edu/">SJSU Parking Status</a> at <span id="last-updated-time"></span><br>
-  Made by Frank Zhang. <a target="_blank"href="https://github.com/timeglitch/SJSUParkingMonitor">GitHub</a></p>
+    <div id="main-content">
+      <h1>SJSU Parking Garage Usage History</h1>
+      <div id="controls">
+        <label for="rangeSelect">Show:</label>
+        <select id="rangeSelect">
+          <option value="today">Today</option>
+          <option value="lastweek">This Day Last Week</option>
+          <option value="week">Past 7 Days</option>
+          <option value="month">Past 30 Days</option>
+        </select>
+        <button id="backBtn">&lt; Back</button>
+        <button id="forwardBtn">Forward &gt;</button>
+      </div>
+      <div id="chart-container">
+        <canvas id="garageChart"></canvas>
+      </div>
+      <p>Last updated from <a href="https://sjsuparkingstatus.sjsu.edu/">SJSU Parking Status</a> at <span id="last-updated-time"></span><br>
+      Made by Frank Zhang. <a target="_blank"href="https://github.com/timeglitch/SJSUParkingMonitor">GitHub</a></p>
+    </div>
   <script>
     let allData = [];
     let chart;
