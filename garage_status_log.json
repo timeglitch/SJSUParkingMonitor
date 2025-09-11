@@ -2714,5 +2714,12 @@
     "West": "30",
     "North": "33",
     "South Campus": "2"
+  },
+  {
+    "timestamp": "2025-09-10 21:00:01",
+    "South": "47",
+    "West": "25",
+    "North": "22",
+    "South Campus": "2"
   }
 ]
