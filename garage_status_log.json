@@ -4940,5 +4940,12 @@
     "West": "100",
     "North": "96",
     "South Campus": "46"
+  },
+  {
+    "timestamp": "2025-09-17 12:00:04",
+    "South": "100",
+    "West": "100",
+    "North": "95",
+    "South Campus": "50"
   }
 ]
