@@ -12185,5 +12185,19 @@
     "West": "21",
     "North": "7",
     "South Campus": "0"
+  },
+  {
+    "timestamp": "2025-10-23 23:00:06",
+    "South": "24",
+    "West": "20",
+    "North": "6",
+    "South Campus": "0"
+  },
+  {
+    "timestamp": "2025-10-23 23:31:05",
+    "South": "Not found",
+    "West": "Not found",
+    "North": "Not found",
+    "South Campus": "Not found"
   }
 ]
