@@ -17085,5 +17085,152 @@
     "West": "48",
     "North": "35",
     "South Campus": "4"
+  },
+  {
+    "timestamp": "2025-11-03 19:30:02",
+    "South": "50",
+    "West": "46",
+    "North": "33",
+    "South Campus": "4"
+  },
+  {
+    "timestamp": "2025-11-03 19:40:05",
+    "South": "49",
+    "West": "44",
+    "North": "31",
+    "South Campus": "4"
+  },
+  {
+    "timestamp": "2025-11-03 19:50:05",
+    "South": "48",
+    "West": "41",
+    "North": "28",
+    "South Campus": "4"
+  },
+  {
+    "timestamp": "2025-11-03 20:00:03",
+    "South": "47",
+    "West": "38",
+    "North": "27",
+    "South Campus": "5"
+  },
+  {
+    "timestamp": "2025-11-03 20:10:05",
+    "South": "46",
+    "West": "36",
+    "North": "24",
+    "South Campus": "5"
+  },
+  {
+    "timestamp": "2025-11-03 20:20:04",
+    "South": "46",
+    "West": "35",
+    "North": "23",
+    "South Campus": "5"
+  },
+  {
+    "timestamp": "2025-11-03 20:30:03",
+    "South": "44",
+    "West": "34",
+    "North": "22",
+    "South Campus": "5"
+  },
+  {
+    "timestamp": "2025-11-03 20:40:03",
+    "South": "42",
+    "West": "33",
+    "North": "20",
+    "South Campus": "4"
+  },
+  {
+    "timestamp": "2025-11-03 20:50:05",
+    "South": "40",
+    "West": "31",
+    "North": "17",
+    "South Campus": "3"
+  },
+  {
+    "timestamp": "2025-11-03 21:00:04",
+    "South": "39",
+    "West": "30",
+    "North": "14",
+    "South Campus": "3"
+  },
+  {
+    "timestamp": "2025-11-03 21:10:01",
+    "South": "37",
+    "West": "29",
+    "North": "10",
+    "South Campus": "2"
+  },
+  {
+    "timestamp": "2025-11-03 21:20:05",
+    "South": "37",
+    "West": "27",
+    "North": "9",
+    "South Campus": "2"
+  },
+  {
+    "timestamp": "2025-11-03 21:30:02",
+    "South": "36",
+    "West": "26",
+    "North": "8",
+    "South Campus": "2"
+  },
+  {
+    "timestamp": "2025-11-03 21:40:05",
+    "South": "34",
+    "West": "26",
+    "North": "8",
+    "South Campus": "2"
+  },
+  {
+    "timestamp": "2025-11-03 21:50:04",
+    "South": "34",
+    "West": "25",
+    "North": "7",
+    "South Campus": "2"
+  },
+  {
+    "timestamp": "2025-11-03 22:00:08",
+    "South": "32",
+    "West": "25",
+    "North": "7",
+    "South Campus": "2"
+  },
+  {
+    "timestamp": "2025-11-03 22:10:05",
+    "South": "31",
+    "West": "24",
+    "North": "6",
+    "South Campus": "2"
+  },
+  {
+    "timestamp": "2025-11-03 22:20:03",
+    "South": "30",
+    "West": "24",
+    "North": "6",
+    "South Campus": "1"
+  },
+  {
+    "timestamp": "2025-11-03 22:30:03",
+    "South": "30",
+    "West": "23",
+    "North": "6",
+    "South Campus": "1"
+  },
+  {
+    "timestamp": "2025-11-03 22:40:05",
+    "South": "30",
+    "West": "23",
+    "North": "5",
+    "South Campus": "0"
+  },
+  {
+    "timestamp": "2025-11-03 22:50:02",
+    "South": "29",
+    "West": "22",
+    "North": "5",
+    "South Campus": "0"
   }
 ]
