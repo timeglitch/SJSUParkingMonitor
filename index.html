@@ -6,7 +6,6 @@
   <title>SJSU Parking Garage Fullness</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-crosshair"></script>
   <style>
     html, body { height: 100%; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; min-height: 100vh; background: #f9f9f9; }
@@ -198,16 +197,7 @@
                 intersect: false,
                 enabled: true
               },
-              crosshair: {
-                enabled: true,
-                line: {
-                  color: '#333',
-                  width: 1
-                },
-                sync: { enabled: false },
-                zoom: { enabled: false },
-                snap: { enabled: true }
-              }
+              // crosshair plugin removed
             },
             interaction: {
               mode: 'index',
