@@ -23623,5 +23623,19 @@
     "West": "14",
     "North": "4",
     "South Campus": "0"
+  },
+  {
+    "timestamp": "2025-11-10 07:10:05",
+    "South": "31",
+    "West": "15",
+    "North": "6",
+    "South Campus": "0"
+  },
+  {
+    "timestamp": "2025-11-10 07:20:05",
+    "South": "34",
+    "West": "16",
+    "North": "9",
+    "South Campus": "0"
   }
 ]
