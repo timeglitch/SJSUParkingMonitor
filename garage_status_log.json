@@ -26486,5 +26486,19 @@
     "West": "12",
     "North": "2",
     "South Campus": "0"
+  },
+  {
+    "timestamp": "2025-11-13 03:20:05",
+    "South": "22",
+    "West": "12",
+    "North": "2",
+    "South Campus": "0"
+  },
+  {
+    "timestamp": "2025-11-13 03:30:07",
+    "South": "Not found",
+    "West": "Not found",
+    "North": "Not found",
+    "South Campus": "Not found"
   }
 ]
