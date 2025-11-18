@@ -31260,5 +31260,19 @@
     "West": "0",
     "North": "19",
     "South Campus": "2"
+  },
+  {
+    "timestamp": "2025-11-17 21:00:05",
+    "South": "44",
+    "West": "0",
+    "North": "15",
+    "South Campus": "2"
+  },
+  {
+    "timestamp": "2025-11-17 21:10:03",
+    "South": "41",
+    "West": "0",
+    "North": "10",
+    "South Campus": "1"
   }
 ]
