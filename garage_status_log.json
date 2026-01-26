@@ -60653,5 +60653,12 @@
     "West": "88",
     "North": "91",
     "South Campus": "11"
+  },
+  {
+    "timestamp": "2026-01-26 09:10:03",
+    "South": "100",
+    "West": "100",
+    "North": "100",
+    "South Campus": "12"
   }
 ]
