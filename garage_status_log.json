@@ -60604,5 +60604,19 @@
     "West": "40",
     "North": "34",
     "South Campus": "1"
+  },
+  {
+    "timestamp": "2026-01-26 08:00:04",
+    "South": "57",
+    "West": "44",
+    "North": "40",
+    "South Campus": "2"
+  },
+  {
+    "timestamp": "2026-01-26 08:10:03",
+    "South": "64",
+    "West": "54",
+    "North": "51",
+    "South Campus": "3"
   }
 ]
