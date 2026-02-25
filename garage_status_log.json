@@ -90480,5 +90480,19 @@
     "West": "25",
     "North": "2",
     "South Campus": "0"
+  },
+  {
+    "timestamp": "2026-02-25 00:10:07",
+    "South": "100",
+    "West": "24",
+    "North": "2",
+    "South Campus": "0"
+  },
+  {
+    "timestamp": "2026-02-25 00:20:08",
+    "South": "100",
+    "West": "24",
+    "North": "2",
+    "South Campus": "0"
   }
 ]
