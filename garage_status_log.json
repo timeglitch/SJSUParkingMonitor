@@ -92755,5 +92755,19 @@
     "West": "19",
     "North": "0",
     "South Campus": "0"
+  },
+  {
+    "timestamp": "2026-02-27 06:30:03",
+    "South": "25",
+    "West": "20",
+    "North": "1",
+    "South Campus": "0"
+  },
+  {
+    "timestamp": "2026-02-27 06:40:02",
+    "South": "25",
+    "West": "20",
+    "North": "1",
+    "South Campus": "0"
   }
 ]
