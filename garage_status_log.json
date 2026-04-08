@@ -132970,5 +132970,19 @@
     "West": "91",
     "North": "81",
     "South Campus": "10"
+  },
+  {
+    "timestamp": "2026-04-08 10:10:03",
+    "South": "92",
+    "West": "93",
+    "North": "85",
+    "South Campus": "12"
+  },
+  {
+    "timestamp": "2026-04-08 10:20:05",
+    "South": "94",
+    "West": "95",
+    "North": "87",
+    "South Campus": "12"
   }
 ]
