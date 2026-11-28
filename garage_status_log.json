@@ -168775,5 +168775,12 @@
     "West": "Not found",
     "North": "Not found",
     "South Campus": "Not found"
+  },
+  {
+    "timestamp": "2026-11-28 01:10:46",
+    "South": "6",
+    "West": "41",
+    "North": "0",
+    "South Campus": "2"
   }
 ]
